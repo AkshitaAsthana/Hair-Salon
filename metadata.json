@@ -1,0 +1,7 @@
+{
+  "name": "Auric Hair Collective",
+  "description": "A luxury hair studio template featuring 3D visuals, AI-powered style consultations, and a modern booking system.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
