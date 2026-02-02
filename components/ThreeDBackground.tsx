@@ -18,27 +18,27 @@ const AnimatedFlow = () => {
   
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
-    meshRef.current.rotation.x = Math.sin(time / 4);
-    meshRef.current.rotation.y = Math.sin(time / 2);
+    meshRef.current.rotation.x = Math.sin(time / 4) * 0.2;
+    meshRef.current.rotation.y = Math.sin(time / 2) * 0.2;
   });
 
   return (
     <Group>
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-        <Sphere ref={meshRef} args={[1, 100, 100]} scale={2.4}>
+      <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.3}>
+        <Sphere ref={meshRef} args={[1, 64, 64]} scale={2.4}>
           <MeshDistortMaterial
             color="#d4af37"
-            speed={4}
-            distort={0.4}
+            speed={3}
+            distort={0.3}
             radius={1}
-            roughness={0.1}
-            metalness={0.8}
+            roughness={0.2}
+            metalness={0.9}
           />
         </Sphere>
       </Float>
       
       {/* Floating particles to represent "hair luster" or shine */}
-      <Points count={200} />
+      <Points count={120} />
     </Group>
   );
 };
@@ -56,7 +56,7 @@ const Points = ({ count }: { count: number }) => {
 
   const ref = useRef<THREE.Points>(null!);
   useFrame((state) => {
-    ref.current.rotation.y = state.clock.getElapsedTime() * 0.05;
+    ref.current.rotation.y = state.clock.getElapsedTime() * 0.03;
   });
 
   return (
@@ -69,7 +69,7 @@ const Points = ({ count }: { count: number }) => {
           itemSize={3}
         />
       </BufferGeometry>
-      <PointsMaterial size={0.03} color="#ffffff" transparent opacity={0.6} />
+      <PointsMaterial size={0.03} color="#ffffff" transparent opacity={0.4} />
     </ThreePoints>
   );
 };
@@ -77,11 +77,12 @@ const Points = ({ count }: { count: number }) => {
 const ThreeDBackground: React.FC = () => {
   return (
     <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-      <Canvas>
+      {/* dpr={[1, 2]} optimizes for performance on high-res screens */}
+      <Canvas dpr={[1, 2]} gl={{ antialias: true, powerPreference: "high-performance" }}>
         <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-        <AmbientLight intensity={0.5} />
-        <PointLight position={[10, 10, 10]} intensity={1} color="#d4af37" />
-        <PointLight position={[-10, -10, -10]} intensity={0.5} color="#ffffff" />
+        <AmbientLight intensity={0.4} />
+        <PointLight position={[10, 10, 10]} intensity={0.8} color="#d4af37" />
+        <PointLight position={[-10, -10, -10]} intensity={0.3} color="#ffffff" />
         <AnimatedFlow />
       </Canvas>
     </div>
